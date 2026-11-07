@@ -2,20 +2,21 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Animal World</title>
 <style>
-body{margin:0;font-family:Arial;background:#f1f7f1;color:#173c2d}
-header{background:#104c39;color:white;text-align:center;padding:25px}
-header h1{font-size:30px}
-input{width:85%;padding:13px;border-radius:20px;border:1px solid #aaa;margin:15px}
-nav{text-align:center;padding:12px}
-button{padding:10px 15px;margin:5px;border:0;border-radius:20px;background:#17664b;color:white}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:12px}
-.animal{background:white;padding:20px 8px;text-align:center;border-radius:15px;box-shadow:0 2px 8px #ccc;cursor:pointer}
-.animal span{font-size:45px}
-#detail{display:none;background:white;margin:15px;padding:20px;border-radius:15px}
-footer{text-align:center;padding:25px;background:#104c39;color:white}
+body{margin:0;font-family:Arial;background:#f1f7f4;color:#173b2d}
+header{background:#104c39;color:white;text-align:center;padding:30px 15px}
+header h1{font-size:32px;margin:0}
+header p{font-size:15px}
+input{width:85%;padding:13px;border:1px solid #ccc;border-radius:10px;margin:15px auto;display:block}
+nav{text-align:center;padding:10px}
+button{background:#17664b;color:white;border:0;padding:10px 15px;border-radius:20px;margin:4px}
+.container{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;padding:15px}
+.card{background:white;border-radius:15px;padding:20px;text-align:center;box-shadow:0 2px 8px #ddd}
+.card span{font-size:45px}
+.card h3{margin:10px 0 5px}
+footer{text-align:center;padding:20px;color:#666}
 </style>
 </head>
 <body>
@@ -24,61 +25,55 @@ footer{text-align:center;padding:25px;background:#104c39;color:white}
 <p>Discover amazing animals and explore nature!</p>
 </header>
 
-<center>
-<input id="search" placeholder="Search animals..." oninput="showAnimals()">
-</center>
+<input type="text" id="search" placeholder="Search animals..." oninput="searchAnimals()">
 
 <nav>
-<button onclick="filter('All')">All</button>
-<button onclick="filter('Mammal')">Mammals</button>
-<button onclick="filter('Bird')">Birds</button>
-<button onclick="filter('Sea')">Sea Life</button>
+<button onclick="filterAnimals('All')">All</button>
+<button onclick="filterAnimals('Mammals')">Mammals</button>
+<button onclick="filterAnimals('Birds')">Birds</button>
+<button onclick="filterAnimals('Reptiles')">Reptiles</button>
+<button onclick="filterAnimals('Sea Life')">Sea Life</button>
 </nav>
 
-<div class="grid" id="animals"></div>
-<div id="detail"></div>
+<h2 style="text-align:center">Discover Animals 🐾</h2>
+<div class="container" id="animals"></div>
 
-<footer>🌿 Animal World | Learn Something New Every Day</footer>
+<footer>© 2026 Animal World | Learn About Nature</footer>
 
 <script>
 const data=[
-["🦁","Lion","Mammal","Africa","Meat","The lion is known as the king of the jungle. It lives in groups called prides."],
-["🐘","Elephant","Mammal","Africa and Asia","Grass, leaves and fruits","Elephants are the largest land animals. They have long trunks."],
-["🐅","Tiger","Mammal","Asia","Meat","Tigers are powerful hunters and have unique stripe patterns."],
-["🦊","Fox","Mammal","Many parts of the world","Small animals and fruits","Foxes are clever animals with excellent hearing."],
-["🐨","Koala","Mammal","Australia","Eucalyptus leaves","Koalas sleep for many hours and live in trees."],
-["🦔","Pangolin","Mammal","Africa and Asia","Ants and termites","Pangolins have protective scales and curl into a ball when threatened."],
-["🦒","Giraffe","Mammal","Africa","Leaves","Giraffes are the tallest land animals."],
-["🐼","Giant Panda","Mammal","China","Bamboo","Pandas spend much of their day eating bamboo."],
-["🐧","Penguin","Bird","Southern Hemisphere","Fish and krill","Penguins are birds that cannot fly but are excellent swimmers."],
-["🦉","Owl","Bird","Worldwide","Small animals","Owls hunt mostly at night."],
-["🦅","Eagle","Bird","Worldwide","Fish and small animals","Eagles have powerful eyesight and strong claws."],
-["🦜","Parrot","Bird","Tropical regions","Seeds and fruits","Many parrots can copy sounds and human speech."],
-["🐬","Dolphin","Sea","Oceans","Fish and squid","Dolphins are intelligent marine mammals."],
-["🐢","Sea Turtle","Sea","Tropical oceans","Seagrass and jellyfish","Sea turtles travel long distances through the ocean."],
-["🐋","Blue Whale","Sea","Oceans","Krill","The blue whale is the largest animal on Earth."],
-["🦈","Shark","Sea","Oceans","Fish and other sea animals","Sharks have lived in oceans for millions of years."],
-["🦍","Gorilla","Mammal","Central Africa","Leaves and fruits","Gorillas are strong, intelligent primates."],
-["🦘","Kangaroo","Mammal","Australia","Grass and plants","Kangaroos move by hopping and carry babies in a pouch."]
+["🦁","Lion","Mammals"],
+["🐘","Elephant","Mammals"],
+["🐅","Tiger","Mammals"],
+["🦊","Fox","Mammals"],
+["🐨","Koala","Mammals"],
+["🐼","Panda","Mammals"],
+["🦒","Giraffe","Mammals"],
+["🐬","Dolphin","Sea Life"],
+["🦈","Shark","Sea Life"],
+["🐢","Turtle","Reptiles"],
+["🐊","Crocodile","Reptiles"],
+["🦅","Eagle","Birds"],
+["🦜","Parrot","Birds"],
+["🦉","Owl","Birds"]
 ];
 
-let category="All";
+function showAnimals(list){
+document.getElementById("animals").innerHTML=list.map(a=>
+`<div class="card"><span>${a[0]}</span><h3>${a[1]}</h3><p>${a[2]}</p></div>`
+).join("");
+}
 
-function showAnimals(){
+function filterAnimals(category){
+showAnimals(category==="All"?data:data.filter(a=>a[2]===category));
+}
+
+function searchAnimals(){
 let q=document.getElementById("search").value.toLowerCase();
-document.getElementById("animals").innerHTML=data.filter(a=>(category==="All"||a[2]===category)&&a[1].toLowerCase().includes(q)).map(a=>`<div class="animal" onclick="openAnimal('${a[1]}')"><span>${a[0]}</span><h3>${a[1]}</h3><small>${a[2]}</small></div>`).join("");
+showAnimals(data.filter(a=>a[1].toLowerCase().includes(q)));
 }
 
-function filter(c){category=c;showAnimals();}
-
-function openAnimal(name){
-let a=data.find(x=>x[1]===name);
-document.getElementById("detail").style.display="block";
-document.getElementById("detail").innerHTML=`<button onclick="document.getElementById('detail').style.display='none'">← Back</button><center><div style="font-size:65px">${a[0]}</div><h2>${a[1]}</h2></center><h3>Habitat</h3><p>${a[3]}</p><h3>Food</h3><p>${a[4]}</p><h3>Amazing Facts</h3><p>${a[5]}</p>`;
-document.getElementById("detail").scrollIntoView({behavior:"smooth"});
-}
-
-showAnimals();
+showAnimals(data);
 </script>
 </body>
 </html>
